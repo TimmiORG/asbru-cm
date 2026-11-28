@@ -539,9 +539,7 @@ sub _locateEntries {
     } else {
         $cfg = $self->get_cfg();
     }
-    # KeePassXC 2.8.0 prefixes the version with the executable name
-    my $cli_version = $$self{kpxc_version} =~ s/^keepassxc-cli[ \t]+//r;
-    if (version->parse($cli_version) >= version->parse("2.7.0")) {
+    if (version->parse($$self{kpxc_version}) >= version->parse("2.7.0")) {
         $search_command = 'search';
         $search_term = '';
     } else {
@@ -826,6 +824,7 @@ sub _setCapabilities {
             }
         }
     }
+    $$self{kpxc_version} =~ s/^keepassxc-cli[ \t]+//r;
     $c = `$ENV{'ASBRU_ENV_FOR_EXTERNAL'} $CLI $$self{kpxc_cli} -h show 2>&1`;
     if ($c =~ /--key-file/) {
         $$self{kpxc_keyfile} = '--key-file';
